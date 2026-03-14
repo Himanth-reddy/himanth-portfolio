@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react'
 import gsap from 'gsap'
+import Cursor from './components/Cursor.jsx'
 import Navbar from './components/Navbar.jsx'
 import Marquee from './components/Marquee.jsx'
 import Hero from './sections/Hero.jsx'
@@ -107,6 +108,7 @@ function App() {
 
   return (
     <div className="app-shell surface-a">
+      <Cursor />
       <Navbar />
       <main>
         <Hero />

@@ -165,6 +165,58 @@ button {
   background: var(--border);
 }
 
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 110;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.cursor-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: -0.25rem;
+  margin-top: -0.25rem;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: opacity 0.2s ease, transform 0.16s ease;
+}
+
+.cursor-ring {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-left: -1.25rem;
+  margin-top: -1.25rem;
+  border: 1.5px solid color-mix(in srgb, var(--accent) 62%, transparent);
+  border-radius: 999px;
+  transition: width 0.28s ease, height 0.28s ease, margin 0.28s ease, border-color 0.28s ease,
+    background 0.28s ease, opacity 0.2s ease;
+}
+
+.cursor-ring-hover {
+  width: 4rem;
+  height: 4rem;
+  margin-left: -2rem;
+  margin-top: -2rem;
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+}
+
+.cursor-ring-press {
+  width: 3rem;
+  height: 3rem;
+  margin-left: -1.5rem;
+  margin-top: -1.5rem;
+}
+
+.cursor-dot-hover {
+  opacity: 0;
+}
+
 .app-shell {
   min-height: 100vh;
 }
@@ -584,5 +636,16 @@ button {
 
   .boot-card {
     padding: 1.5rem;
+  }
+}
+
+@media (hover: none) {
+  * {
+    cursor: auto;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
   }
 }
