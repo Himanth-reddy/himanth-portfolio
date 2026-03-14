@@ -165,6 +165,253 @@ button {
   background: var(--border);
 }
 
+.app-shell {
+  min-height: 100vh;
+}
+
+.nav-shell {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem 3.5rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  font-family: var(--fd);
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+.nav-logo span {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: var(--muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.nav-cta {
+  border: 1px solid var(--accent);
+  padding: 0.7rem 1.35rem;
+  color: var(--text);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero-shell {
+  display: grid;
+  gap: 3.5rem;
+  padding-top: 4.75rem;
+}
+
+.hero-kicker {
+  color: var(--accent);
+  font-size: 0.6875rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  display: grid;
+  gap: 0.25rem;
+  font-family: var(--fd);
+  font-size: clamp(4rem, 10vw, 8.75rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.08em;
+  text-transform: uppercase;
+}
+
+.hero-title span:nth-child(2) {
+  padding-left: clamp(2rem, 14vw, 11.25rem);
+}
+
+.hero-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.hero-meta-card {
+  padding: 1.75rem;
+}
+
+.hero-terminal-title {
+  margin-bottom: 0.9rem;
+  color: var(--dim);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-terminal-line {
+  color: var(--gh-c);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.marquee-shell {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  padding: 1.1rem 3.5rem;
+  background: var(--bg2);
+}
+
+.marquee-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--dim);
+  font-family: var(--fd);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.marquee-item span {
+  color: var(--accent);
+}
+
+.split-shell {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6rem;
+}
+
+.placeholder-block {
+  min-height: 10rem;
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-head-row {
+  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 2rem;
+}
+
+.filter-shell {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.filter-shell button {
+  border: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  color: var(--muted);
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.project-grid,
+.stats-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.placeholder-form {
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.placeholder-form label {
+  color: var(--dim);
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.placeholder-form input,
+.placeholder-form textarea {
+  border: 1px solid var(--border);
+  padding: 0.75rem 0.8rem;
+  background: var(--bg2);
+  color: var(--text);
+}
+
+.placeholder-form button {
+  justify-self: start;
+  border: 1px solid var(--accent);
+  padding: 0.75rem 1.25rem;
+  color: var(--text);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.footer-shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.75rem 3.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer-logo {
+  font-family: var(--fd);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--text);
+  text-transform: uppercase;
+}
+
+.footer-logo span {
+  color: var(--accent);
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.footer-links a,
+.footer-copy {
+  color: var(--dim);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .surface-a {
   background: var(--bg);
 }
@@ -217,6 +464,32 @@ button {
 }
 
 @media (max-width: 768px) {
+  .nav-shell {
+    padding: 1.25rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero-meta-grid,
+  .split-shell,
+  .section-head-row,
+  .project-grid,
+  .stats-grid,
+  .footer-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .marquee-shell {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .footer-shell {
+    padding: 1.5rem 1.25rem;
+    display: grid;
+  }
+
   .section-shell {
     padding: 5rem 1.25rem;
   }
