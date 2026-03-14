@@ -1,4 +1,5 @@
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
+import { siteContent } from '../data/siteContent.js'
 
 function Footer() {
   const { ref, isVisible } = useScrollReveal()
@@ -6,14 +7,19 @@ function Footer() {
   return (
     <footer ref={ref} className={`footer-shell reveal-section ${isVisible ? 'is-visible' : ''}`}>
       <p className="footer-logo">
-        YK<span>.</span>
+        <span className="narrow-display">
+          {siteContent.brand.shortName}
+          <span>{siteContent.brand.mark}</span>
+        </span>
       </p>
       <div className="footer-links">
-        <a href="#">GitHub</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">Kaggle</a>
+        {siteContent.footer.links.map((link) => (
+          <a key={link.label} href={link.href}>
+            {link.label}
+          </a>
+        ))}
       </div>
-      <p className="footer-copy">Copyright 2026. Built with React + Tailwind.</p>
+      <p className="footer-copy">{siteContent.brand.footerCopy}</p>
     </footer>
   )
 }

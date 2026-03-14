@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { statsCards, statsProfile, statsSectionContent } from '../data/stats.js'
 import { useGithubStats } from '../hooks/useGithubStats.js'
 import { useLeetcodeStats } from '../hooks/useLeetcodeStats.js'
+import { siteContent } from '../data/siteContent.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 function useCountUp(target, isVisible) {
@@ -38,29 +39,125 @@ function useCountUp(target, isVisible) {
 
 function LiveStats() {
   const { ref, isVisible } = useScrollReveal()
+  const gridRef = useRef(null)
+  const scrollStateRef = useRef({ frameId: 0, currentLeft: 0, targetLeft: 0 })
   const githubResult = useGithubStats(statsProfile.githubUsername)
   const leetcodeResult = useLeetcodeStats(statsProfile.leetcodeUsername)
+  const githubCard = statsCards.find((card) => card.id === 'github')
+  const leetcodeCard = statsCards.find((card) => card.id === 'leetcode')
 
-  const githubValue = githubResult.data?.publicRepos ?? statsCards.github.fallbackValue
-  const githubSubStats = githubResult.data
-    ? [
-        { label: 'Followers', value: githubResult.data.followers },
-        { label: 'Following', value: githubResult.data.following },
-        { label: 'Gists', value: githubResult.data.gists },
-      ]
-    : statsCards.github.fallbackSubStats
+  const githubMetrics = githubResult.data ?? githubCard?.fallbackMetrics ?? {}
+  const leetcodeMetrics = leetcodeResult.data ?? leetcodeCard?.fallbackMetrics ?? {}
 
-  const leetcodeValue = leetcodeResult.data?.solved ?? statsCards.leetcode.fallbackValue
-  const leetcodeSubStats = leetcodeResult.data
-    ? [
-        { label: 'Easy', value: leetcodeResult.data.easy },
-        { label: 'Medium', value: leetcodeResult.data.medium },
-        { label: 'Hard', value: leetcodeResult.data.hard },
-      ]
-    : statsCards.leetcode.fallbackSubStats
+  const ghAnimated = useCountUp(githubMetrics[githubCard?.primaryStat.key] ?? 0, isVisible)
+  const lcAnimated = useCountUp(leetcodeMetrics[leetcodeCard?.primaryStat.key] ?? 0, isVisible)
 
-  const ghAnimated = useCountUp(githubValue, isVisible)
-  const lcAnimated = useCountUp(leetcodeValue, isVisible)
+  const renderedStatsCards = statsCards.map((card) => {
+    if (card.source === 'github') {
+      return {
+        ...card,
+        displayValue: ghAnimated,
+        primaryLabel: card.primaryStat.label,
+        subStats: card.subStats.map((stat) => ({
+          label: stat.label,
+          value: githubMetrics[stat.key] ?? 0,
+        })),
+        isTextValue: false,
+      }
+    }
+
+    if (card.source === 'leetcode') {
+      return {
+        ...card,
+        displayValue: lcAnimated,
+        primaryLabel: card.primaryStat.label,
+        subStats: card.subStats.map((stat) => ({
+          label: stat.label,
+          value: leetcodeMetrics[stat.key] ?? 0,
+        })),
+        isTextValue: false,
+      }
+    }
+
+    return {
+      ...card,
+      displayValue: card.primaryText ?? card.fallbackValue ?? 0,
+      subStats: card.subStats ?? card.fallbackSubStats ?? [],
+      isTextValue: Boolean(card.primaryText),
+    }
+  })
+
+  useEffect(() => {
+    const node = gridRef.current
+
+    if (!node || renderedStatsCards.length <= 3) {
+      return undefined
+    }
+
+    const scrollState = scrollStateRef.current
+    scrollState.currentLeft = node.scrollLeft
+    scrollState.targetLeft = node.scrollLeft
+
+    const animate = () => {
+      scrollState.currentLeft += (scrollState.targetLeft - scrollState.currentLeft) * 0.12
+
+      if (Math.abs(scrollState.targetLeft - scrollState.currentLeft) < 0.5) {
+        scrollState.currentLeft = scrollState.targetLeft
+      } else {
+        scrollState.frameId = window.requestAnimationFrame(animate)
+      }
+
+      node.scrollLeft = scrollState.currentLeft
+    }
+
+    const startAnimation = () => {
+      if (scrollState.frameId) {
+        return
+      }
+
+      scrollState.frameId = window.requestAnimationFrame(() => {
+        scrollState.frameId = 0
+        animate()
+      })
+    }
+
+    const onWheel = (event) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+        return
+      }
+
+      event.preventDefault()
+
+      const maxScroll = node.scrollWidth - node.clientWidth
+      scrollState.targetLeft = Math.max(0, Math.min(maxScroll, scrollState.targetLeft + event.deltaY))
+      startAnimation()
+    }
+
+    node.addEventListener('wheel', onWheel, { passive: false })
+
+    return () => {
+      node.removeEventListener('wheel', onWheel)
+      if (scrollState.frameId) {
+        window.cancelAnimationFrame(scrollState.frameId)
+        scrollState.frameId = 0
+      }
+    }
+  }, [renderedStatsCards.length])
+
+  const scrollStats = () => {
+    const node = gridRef.current
+
+    if (!node || renderedStatsCards.length <= 3) {
+      return
+    }
+
+    const firstCard = node.querySelector('.stats-card')
+    const cardWidth = firstCard instanceof HTMLElement ? firstCard.offsetWidth : node.clientWidth / 3
+    node.scrollBy({
+      left: cardWidth + 1,
+      behavior: 'smooth',
+    })
+  }
 
   return (
     <section
@@ -72,104 +169,67 @@ function LiveStats() {
 
       <div className="section-head-row stats-head-row reveal-item" style={{ transitionDelay: '0.06s' }}>
         <h2 className="display-title stats-title">
-          {statsSectionContent.titleTop}
-          <br />
-          {statsSectionContent.titleBottom}
+          <span className="narrow-display">
+            {statsSectionContent.titleTop}
+            <br />
+            {statsSectionContent.titleBottom}
+          </span>
         </h2>
-        <p className="body-copy stats-copy">{statsSectionContent.description}</p>
+        <div className="projects-controls">
+          <p className="body-copy stats-copy">{statsSectionContent.description}</p>
+          <button type="button" className="project-scroll-btn hov" onClick={scrollStats} aria-label="Next stats tile">
+            {'->'}
+          </button>
+        </div>
       </div>
 
-      <div className="stats-grid grid-frame reveal-item" style={{ transitionDelay: '0.12s' }}>
-        <article className="stats-card surface-b">
-          <div className="stats-card-top">
-            <div className="stats-platform-row">
-              <span className={`stats-platform-icon ${statsCards.github.colorClass}`}>{statsCards.github.short}</span>
-              <span className="stats-platform-name">{statsCards.github.name}</span>
-            </div>
-            <span className="live-pill">Live</span>
-          </div>
+      <div
+        ref={gridRef}
+        className={`stats-grid reveal-item ${renderedStatsCards.length > 3 ? 'stats-grid-scroll' : 'grid-frame'}`}
+        style={{ transitionDelay: '0.12s' }}
+      >
+        {renderedStatsCards.map((card) => {
+          const CardTag = card.href ? 'a' : 'article'
 
-          <p className={`stats-primary ${statsCards.github.colorClass}`}>{ghAnimated}</p>
-          <p className="stats-primary-label">{statsCards.github.primaryLabel}</p>
+          return (
+            <CardTag
+              key={card.id}
+              className={`stats-card surface-b ${card.href ? 'hov' : ''}`}
+              href={card.href}
+              target={card.href ? '_blank' : undefined}
+              rel={card.href ? 'noreferrer' : undefined}
+            >
+              <span className="stats-card-bar" aria-hidden="true" />
+              <div className="stats-card-top">
+                <div className="stats-platform-row">
+                  <span className={`stats-platform-icon ${card.colorClass}`}>{card.short}</span>
+                  <span className="stats-platform-name">{card.name}</span>
+                </div>
+                <span className="live-pill">Live</span>
+              </div>
 
-          <div className="stats-sub-row">
-            {githubSubStats.map((item) => (
-              <p key={`gh-${item.label}`} className="stats-sub-item">
-                <strong>{item.value}</strong>
-                {item.label}
+              <p className={`stats-primary ${card.isTextValue ? 'stats-primary-text' : ''} ${card.colorClass}`}>
+                <span className="narrow-display">{card.displayValue}</span>
               </p>
-            ))}
-          </div>
+              <p className="stats-primary-label">{card.primaryLabel}</p>
 
-          <div className="stats-progress-track">
-            <span
-              className="stats-progress-fill"
-              style={{ width: isVisible ? `${statsCards.github.progress}%` : '0%' }}
-            />
-          </div>
-        </article>
+              <div className="stats-sub-row">
+                {card.subStats.map((item) => (
+                  <p key={`${card.id}-${item.label}`} className="stats-sub-item">
+                    <strong>
+                      <span className="narrow-display">{item.value}</span>
+                    </strong>
+                    {item.label}
+                  </p>
+                ))}
+              </div>
 
-        <article className="stats-card surface-b">
-          <div className="stats-card-top">
-            <div className="stats-platform-row">
-              <span className={`stats-platform-icon ${statsCards.leetcode.colorClass}`}>
-                {statsCards.leetcode.short}
-              </span>
-              <span className="stats-platform-name">{statsCards.leetcode.name}</span>
-            </div>
-            <span className="live-pill">Live</span>
-          </div>
-
-          <p className={`stats-primary ${statsCards.leetcode.colorClass}`}>{lcAnimated}</p>
-          <p className="stats-primary-label">{statsCards.leetcode.primaryLabel}</p>
-
-          <div className="stats-sub-row">
-            {leetcodeSubStats.map((item) => (
-              <p key={`lc-${item.label}`} className="stats-sub-item">
-                <strong>{item.value}</strong>
-                {item.label}
-              </p>
-            ))}
-          </div>
-
-          <div className="stats-progress-track">
-            <span
-              className="stats-progress-fill"
-              style={{ width: isVisible ? `${statsCards.leetcode.progress}%` : '0%' }}
-            />
-          </div>
-        </article>
-
-        <article className="stats-card surface-b">
-          <div className="stats-card-top">
-            <div className="stats-platform-row">
-              <span className={`stats-platform-icon ${statsCards.kaggle.colorClass}`}>{statsCards.kaggle.short}</span>
-              <span className="stats-platform-name">{statsCards.kaggle.name}</span>
-            </div>
-            <span className="live-pill">Live</span>
-          </div>
-
-          <p className={`stats-primary stats-primary-text ${statsCards.kaggle.colorClass}`}>
-            {statsCards.kaggle.primaryText}
-          </p>
-          <p className="stats-primary-label">{statsCards.kaggle.primaryLabel}</p>
-
-          <div className="stats-sub-row">
-            {statsCards.kaggle.subStats.map((item) => (
-              <p key={`kg-${item.label}`} className="stats-sub-item">
-                <strong>{item.value}</strong>
-                {item.label}
-              </p>
-            ))}
-          </div>
-
-          <div className="stats-progress-track">
-            <span
-              className="stats-progress-fill"
-              style={{ width: isVisible ? `${statsCards.kaggle.progress}%` : '0%' }}
-            />
-          </div>
-        </article>
+              <div className="stats-progress-track">
+                <span className="stats-progress-fill" style={{ width: isVisible ? `${card.progress}%` : '0%' }} />
+              </div>
+            </CardTag>
+          )
+        })}
       </div>
     </section>
   )

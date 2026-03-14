@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import { siteContent } from '../data/siteContent.js'
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const links = ['Home', 'About', 'Projects', 'Stats', 'Contact']
+  const links = siteContent.navigation.links
 
   useEffect(() => {
     const onScroll = () => {
@@ -18,20 +19,21 @@ function Navbar() {
   return (
     <nav className={`nav-shell ${isScrolled ? 'is-scrolled' : ''}`} aria-label="Primary">
       <a className="nav-logo" href="#hero" aria-label="Go to top" data-nav-logo>
-        YK<span>.</span>
+        {siteContent.brand.shortName}
+        <span>{siteContent.brand.mark}</span>
       </a>
 
       <ul className="nav-links">
         {links.map((link) => (
-          <li key={link} data-nav-item>
-            <a href={`#${link.toLowerCase()}`}>{link}</a>
+          <li key={link.label} data-nav-item>
+            <a href={link.href}>{link.label}</a>
           </li>
         ))}
       </ul>
 
-      <button className="nav-cta" type="button" data-nav-cta>
-        Hire Me
-      </button>
+      <a className="nav-cta" href={siteContent.navigation.cta.href} data-nav-cta>
+        {siteContent.navigation.cta.label}
+      </a>
     </nav>
   )
 }

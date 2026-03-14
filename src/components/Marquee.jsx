@@ -1,10 +1,11 @@
 import { marqueeItems } from '../data/skills.js'
+import { siteContent } from '../data/siteContent.js'
 
 function Marquee() {
   const loopItems = [...marqueeItems, ...marqueeItems]
 
   return (
-    <section className="marquee-shell" aria-label="Skills ticker">
+    <section className="marquee-shell" aria-label={siteContent.marquee.ariaLabel}>
       <div className="marquee-track">
         <div className="marquee-inner">
           {loopItems.map((item, index) => (

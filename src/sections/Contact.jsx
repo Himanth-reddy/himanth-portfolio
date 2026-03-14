@@ -80,11 +80,13 @@ function Contact() {
       <div className="contact-grid">
         <div className="contact-copy-col reveal-item reveal-left" style={{ transitionDelay: '0.07s' }}>
           <h2 className="contact-title">
-            {contactSectionContent.titleTop}
-            <br />
-            <span className="outline-text">{contactSectionContent.titleAccent}</span>
-            <br />
-            {contactSectionContent.titleBottom}
+            <span className="narrow-display">
+              {contactSectionContent.titleTop}
+              <br />
+              <span className="outline-text">{contactSectionContent.titleAccent}</span>
+              <br />
+              {contactSectionContent.titleBottom}
+            </span>
           </h2>
 
           <p className="contact-copy">{contactSectionContent.description}</p>
@@ -148,7 +150,7 @@ function Contact() {
           </label>
 
           <button className="contact-submit hov" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Sending...' : 'Send Message ->'}
+            {isSubmitting ? 'Sending...' : status.type === 'success' ? 'Message Sent' : 'Send Message ->'}
           </button>
 
           {status.message ? (

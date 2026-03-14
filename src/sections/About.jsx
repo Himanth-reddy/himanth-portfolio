@@ -1,4 +1,5 @@
 import { aboutContent, skillGroups } from '../data/skills.js'
+import { siteContent } from '../data/siteContent.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 function About() {
@@ -6,13 +7,15 @@ function About() {
 
   return (
     <section id="about" ref={ref} className={`section-shell reveal-section ${isVisible ? 'is-visible' : ''}`}>
-      <p className="section-label reveal-item">About Me</p>
+      <p className="section-label reveal-item">{siteContent.about.sectionLabel}</p>
       <div className="about-grid">
         <div className="about-copy-col reveal-item reveal-left">
           <h2 className="about-title reveal-item" style={{ transitionDelay: '0.06s' }}>
-            {aboutContent.headingMain} <span className="outline-text">{aboutContent.headingAccent}</span>
-            <br />
-            {aboutContent.headingSuffix}
+            <span className="narrow-display">
+              {aboutContent.headingMain} <span className="outline-text">{aboutContent.headingAccent}</span>
+              <br />
+              {aboutContent.headingSuffix}
+            </span>
           </h2>
 
           {aboutContent.paragraphs.map((paragraph) => (

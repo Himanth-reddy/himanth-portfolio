@@ -1,39 +1,61 @@
+import { heroActionLinks } from '../data/contact.js'
+import { siteContent } from '../data/siteContent.js'
+
 function Hero() {
+  const heroTitleLines = siteContent.hero.titleLines.map((line) =>
+    typeof line === 'string' ? { text: line, style: 'solid', offset: false } : line,
+  )
+
   return (
     <section id="hero" className="hero-shell section-shell">
       <div className="hero-glow" aria-hidden="true" />
-      <span className="hero-orb hero-orb-1" aria-hidden="true" />
-      <span className="hero-orb hero-orb-2" aria-hidden="true" />
-      <span className="hero-orb hero-orb-3" aria-hidden="true" />
 
       <p className="hero-kicker" data-hero-kicker>
-        Available for internships and freelance
+        {siteContent.hero.kicker}
       </p>
 
       <h1 className="hero-title">
-        <span className="hero-line">
-          <span data-hero-line>Building</span>
-        </span>
-        <span className="hero-line hero-line-offset">
-          <span data-hero-line>Things That</span>
-        </span>
-        <span className="hero-line">
-          <span className="outline-text" data-hero-line>
-            Learn.
+        {heroTitleLines.map((line, index) => (
+          <span key={`${line.text}-${index}`} className={`hero-line ${line.offset ? 'hero-line-offset' : ''}`}>
+            <span className="hero-line-text">
+              <span className={line.style === 'outline' ? 'outline-text' : ''} data-hero-line>
+                {line.text}
+              </span>
+            </span>
           </span>
-        </span>
+        ))}
       </h1>
 
-      <div className="hero-meta-grid grid-frame">
-        <div className="hero-meta-card surface-a" data-hero-meta>
-          <p className="body-copy">
-            AIML student crafting intelligent models and bold web experiences.
-          </p>
+      <div className="hero-meta-grid">
+        <div className="hero-meta-card" data-hero-meta>
+          <p className="body-copy">{siteContent.hero.description}</p>
+          <div className="hero-actions">
+            <a className="hero-action hero-action-primary hov" href={heroActionLinks.work}>
+              {siteContent.hero.actions.primary.label}
+            </a>
+            <a
+              className="hero-action hero-action-secondary hov"
+              href={heroActionLinks.cv}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {siteContent.hero.actions.secondary.label}
+            </a>
+          </div>
         </div>
-        <div className="hero-meta-card surface-b" data-hero-terminal>
-          <p className="hero-terminal-title">~/portfolio</p>
-          <p className="hero-terminal-line">&gt; whoami</p>
-          <p className="hero-terminal-line">AIML student @ Warangal, India</p>
+        <div className="hero-meta-card" data-hero-terminal>
+          <div className="hero-terminal-head">
+            <span className="hero-terminal-dot hero-terminal-dot-red" aria-hidden="true" />
+            <span className="hero-terminal-dot hero-terminal-dot-amber" aria-hidden="true" />
+            <span className="hero-terminal-dot hero-terminal-dot-green" aria-hidden="true" />
+            <p className="hero-terminal-title">{siteContent.hero.terminal.path}</p>
+          </div>
+          <p className="hero-terminal-line">{siteContent.hero.terminal.command}</p>
+          {siteContent.hero.terminal.output.map((line, index) => (
+            <p key={`${siteContent.hero.terminal.path}-${index}`} className="hero-terminal-line">
+              {line}
+            </p>
+          ))}
         </div>
       </div>
     </section>
