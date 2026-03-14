@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
 
+export const LEETCODE_STATS = {
+  solved: { key: 'solved', label: 'Problems Solved' },
+  easy: { key: 'easy', label: 'Easy' },
+  medium: { key: 'medium', label: 'Medium' },
+  hard: { key: 'hard', label: 'Hard' },
+}
+
 function asNumber(value) {
   const numeric = Number(value)
   return Number.isFinite(numeric) ? numeric : 0

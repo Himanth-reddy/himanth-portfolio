@@ -1,27 +1,12 @@
-export const contactSectionContent = {
-  label: 'Get In Touch',
-  titleTop: "Let's",
-  titleAccent: 'Build',
-  titleBottom: 'Together',
-  description:
-    'Open to internships, freelance projects, and hackathon collaborations. If you have an idea, I can help shape and ship it.',
+import { siteContent } from './siteContent.js'
+
+export const contactSectionContent = siteContent.contact.section
+
+export const heroActionLinks = {
+  work: siteContent.hero.actions.primary.href,
+  cv: siteContent.hero.actions.secondary.href,
 }
 
-export const contactLinks = [
-  { id: 'github', icon: 'GH', label: 'github.com/yourhandle', href: 'https://github.com/' },
-  { id: 'linkedin', icon: 'LI', label: 'linkedin.com/in/yourname', href: 'https://linkedin.com/' },
-  { id: 'kaggle', icon: 'KG', label: 'kaggle.com/yourname', href: 'https://kaggle.com/' },
-  { id: 'email', icon: '@', label: 'hello@yourname.dev', href: 'mailto:hello@yourname.dev' },
-]
+export const contactLinks = siteContent.contact.links
 
-export const contactFormFields = [
-  { id: 'name', label: 'Name', placeholder: 'Your name', type: 'text' },
-  { id: 'email', label: 'Email', placeholder: 'your@email.com', type: 'email' },
-  { id: 'subject', label: 'Subject', placeholder: "What's this about?", type: 'text' },
-  {
-    id: 'message',
-    label: 'Message',
-    placeholder: 'Tell me about your project...',
-    type: 'textarea',
-  },
-]
+export const contactFormFields = siteContent.contact.formFields

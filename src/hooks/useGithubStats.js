@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
 
+export const GITHUB_STATS = {
+  publicRepos: { key: 'publicRepos', label: 'Public Repos' },
+  followers: { key: 'followers', label: 'Followers' },
+  following: { key: 'following', label: 'Following' },
+  gists: { key: 'gists', label: 'Gists' },
+  accountYears: { key: 'accountYears', label: 'Account Years' },
+}
+
 function yearsSince(dateString) {
   if (!dateString) {
     return 0
