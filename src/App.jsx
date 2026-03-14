@@ -12,6 +12,13 @@ import Footer from './sections/Footer.jsx'
 
 function App() {
   useLayoutEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const supportsHover = window.matchMedia('(hover: hover)').matches
+
+    if (prefersReducedMotion) {
+      return undefined
+    }
+
     const ctx = gsap.context(() => {
       const intro = gsap.timeline({ delay: 0.1 })
 
@@ -96,10 +103,14 @@ function App() {
         })
       }
 
-      window.addEventListener('mousemove', onMove)
+      if (supportsHover) {
+        window.addEventListener('mousemove', onMove)
+      }
 
       return () => {
-        window.removeEventListener('mousemove', onMove)
+        if (supportsHover) {
+          window.removeEventListener('mousemove', onMove)
+        }
       }
     })
 

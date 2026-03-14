@@ -1,6 +1,10 @@
+import { useScrollReveal } from '../hooks/useScrollReveal.js'
+
 function Footer() {
+  const { ref, isVisible } = useScrollReveal()
+
   return (
-    <footer className="footer-shell">
+    <footer ref={ref} className={`footer-shell reveal-section ${isVisible ? 'is-visible' : ''}`}>
       <p className="footer-logo">
         YK<span>.</span>
       </p>

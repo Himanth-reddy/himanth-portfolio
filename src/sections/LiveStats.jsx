@@ -63,10 +63,14 @@ function LiveStats() {
   const lcAnimated = useCountUp(leetcodeValue, isVisible)
 
   return (
-    <section id="stats" ref={ref} className={`section-shell stats-shell ${isVisible ? 'is-visible' : ''}`}>
-      <p className="section-label">{statsSectionContent.label}</p>
+    <section
+      id="stats"
+      ref={ref}
+      className={`section-shell stats-shell reveal-section ${isVisible ? 'is-visible' : ''}`}
+    >
+      <p className="section-label reveal-item">{statsSectionContent.label}</p>
 
-      <div className="section-head-row stats-head-row">
+      <div className="section-head-row stats-head-row reveal-item" style={{ transitionDelay: '0.06s' }}>
         <h2 className="display-title stats-title">
           {statsSectionContent.titleTop}
           <br />
@@ -75,7 +79,7 @@ function LiveStats() {
         <p className="body-copy stats-copy">{statsSectionContent.description}</p>
       </div>
 
-      <div className="stats-grid grid-frame">
+      <div className="stats-grid grid-frame reveal-item" style={{ transitionDelay: '0.12s' }}>
         <article className="stats-card surface-b">
           <div className="stats-card-top">
             <div className="stats-platform-row">

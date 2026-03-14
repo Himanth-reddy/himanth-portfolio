@@ -1,8 +1,10 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { projectFilters, projects } from '../data/projects.js'
+import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 function Projects() {
+  const { ref, isVisible } = useScrollReveal()
   const [activeFilter, setActiveFilter] = useState('all')
   const gridRef = useRef(null)
 
@@ -41,9 +43,13 @@ function Projects() {
   }, [visibleProjects])
 
   return (
-    <section id="projects" className="section-shell">
-      <p className="section-label">Selected Work</p>
-      <div className="section-head-row projects-head">
+    <section
+      id="projects"
+      ref={ref}
+      className={`section-shell reveal-section ${isVisible ? 'is-visible' : ''}`}
+    >
+      <p className="section-label reveal-item">Selected Work</p>
+      <div className="section-head-row projects-head reveal-item" style={{ transitionDelay: '0.06s' }}>
         <h2 className="display-title projects-title">Projects</h2>
         <div className="filter-shell">
           {projectFilters.map((filter) => (
@@ -59,7 +65,7 @@ function Projects() {
         </div>
       </div>
 
-      <div ref={gridRef} className="project-grid grid-frame">
+      <div ref={gridRef} className="project-grid grid-frame reveal-item" style={{ transitionDelay: '0.12s' }}>
         {visibleProjects.map((project, index) => (
           <article key={project.id} className="project-card hov surface-a">
             <span className="project-card-bar" aria-hidden="true" />

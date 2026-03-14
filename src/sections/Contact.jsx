@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import emailjs from '@emailjs/browser'
 import { contactFormFields, contactLinks, contactSectionContent } from '../data/contact.js'
+import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 const INITIAL_FORM = {
   name: '',
@@ -10,6 +11,7 @@ const INITIAL_FORM = {
 }
 
 function Contact() {
+  const { ref, isVisible } = useScrollReveal()
   const [form, setForm] = useState(INITIAL_FORM)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState({ type: 'idle', message: '' })
@@ -69,10 +71,14 @@ function Contact() {
   }
 
   return (
-    <section id="contact" className="section-shell contact-shell">
-      <p className="section-label">{contactSectionContent.label}</p>
+    <section
+      id="contact"
+      ref={ref}
+      className={`section-shell contact-shell reveal-section ${isVisible ? 'is-visible' : ''}`}
+    >
+      <p className="section-label reveal-item">{contactSectionContent.label}</p>
       <div className="contact-grid">
-        <div className="contact-copy-col">
+        <div className="contact-copy-col reveal-item reveal-left" style={{ transitionDelay: '0.07s' }}>
           <h2 className="contact-title">
             {contactSectionContent.titleTop}
             <br />
@@ -93,7 +99,11 @@ function Contact() {
           </div>
         </div>
 
-        <form className="contact-form" onSubmit={onSubmit}>
+        <form
+          className="contact-form reveal-item reveal-right"
+          style={{ transitionDelay: '0.12s' }}
+          onSubmit={onSubmit}
+        >
           <div className="contact-form-row">
             {contactFormFields.slice(0, 2).map((field) => (
               <label key={field.id} htmlFor={field.id} className="contact-field">
