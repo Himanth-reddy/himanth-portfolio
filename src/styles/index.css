@@ -413,14 +413,21 @@ button {
 
 .marquee-track {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
+  width: max-content;
+}
+
+.marquee-inner {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: marquee-scroll 20s linear infinite;
 }
 
 .marquee-item {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
+  padding-right: 2rem;
   color: var(--dim);
   font-family: var(--fd);
   font-size: 0.8125rem;
@@ -430,6 +437,82 @@ button {
 }
 
 .marquee-item span {
+  color: var(--accent);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6rem;
+}
+
+.about-title {
+  margin-bottom: 1.75rem;
+  font-family: var(--fd);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+  text-transform: none;
+}
+
+.about-body {
+  margin-bottom: 0.65rem;
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.about-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.95rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.about-now::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--gh-c);
+  border-radius: 999px;
+}
+
+.about-skills-col {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.skill-category {
+  margin-bottom: 0.75rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.skill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-badge {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.9rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  transition: border-color 0.22s ease, color 0.22s ease;
+}
+
+.skill-badge.is-hot,
+.skill-badge:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
   color: var(--accent);
 }
 
@@ -595,6 +678,15 @@ button {
   line-height: 1.8;
 }
 
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 @media (max-width: 768px) {
   .nav-shell {
     padding: 1.25rem;
@@ -605,6 +697,7 @@ button {
   }
 
   .hero-meta-grid,
+  .about-grid,
   .split-shell,
   .section-head-row,
   .project-grid,
@@ -615,6 +708,10 @@ button {
 
   .marquee-shell {
     padding: 1.1rem 1.25rem;
+  }
+
+  .marquee-inner {
+    animation-duration: 16s;
   }
 
   .footer-shell {

@@ -1,15 +1,43 @@
+import { aboutContent, skillGroups } from '../data/skills.js'
+
 function About() {
   return (
     <section id="about" className="section-shell">
       <p className="section-label">About Me</p>
-      <div className="split-shell">
-        <div>
-          <h2 className="display-title">
-            AIML <span className="outline-text">Dev</span>
+      <div className="about-grid">
+        <div className="about-copy-col">
+          <h2 className="about-title">
+            {aboutContent.headingMain} <span className="outline-text">{aboutContent.headingAccent}</span>
+            <br />
+            {aboutContent.headingSuffix}
           </h2>
-          <p className="body-copy">Builder profile and bio content will be added next.</p>
+
+          {aboutContent.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="about-body">
+              {paragraph}
+            </p>
+          ))}
+
+          <p className="about-now">{aboutContent.nowText}</p>
         </div>
-        <div className="placeholder-block surface-b">Skills badges scaffold</div>
+
+        <div className="about-skills-col">
+          {skillGroups.map((group) => (
+            <div key={group.category}>
+              <p className="skill-category">{group.category}</p>
+              <div className="skill-row">
+                {group.items.map((item) => (
+                  <span
+                    key={`${group.category}-${item.name}`}
+                    className={`skill-badge ${item.hot ? 'is-hot' : ''}`}
+                  >
+                    {item.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

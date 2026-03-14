@@ -1,23 +1,19 @@
+import { marqueeItems } from '../data/skills.js'
+
 function Marquee() {
-  const items = [
-    'React',
-    'Machine Learning',
-    'Kaggle Top 12%',
-    'PyTorch',
-    'Open to Opportunities',
-    'Tailwind CSS',
-    'NLP & Transformers',
-  ]
+  const loopItems = [...marqueeItems, ...marqueeItems]
 
   return (
     <section className="marquee-shell" aria-label="Skills ticker">
       <div className="marquee-track">
-        {items.map((item) => (
-          <span key={item} className="marquee-item">
-            <span>+</span>
-            {item}
-          </span>
-        ))}
+        <div className="marquee-inner">
+          {loopItems.map((item, index) => (
+            <span key={`${item}-${index}`} className="marquee-item">
+              <span>+</span>
+              {item}
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   )
