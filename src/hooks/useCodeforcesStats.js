@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { getStatsCacheKey, isFreshCache, isRateLimitError, readStatsCache, writeStatsCache } from '../utils/statsCache.js'
 
 export const CODEFORCES_STATS = {
   rank: { key: 'rank', label: 'Current Rank' },
@@ -32,6 +33,19 @@ export function useCodeforcesStats(handle) {
       setLoading(false)
       setData(null)
       setError('Missing Codeforces handle')
+      return undefined
+    }
+
+    const cacheKey = getStatsCacheKey('codeforces', handle)
+    const cachedEntry = readStatsCache(cacheKey)
+
+    if (cachedEntry?.data) {
+      setData(cachedEntry.data)
+      setLoading(!isFreshCache(cachedEntry))
+      setError(null)
+    }
+
+    if (isFreshCache(cachedEntry)) {
       return undefined
     }
 
@@ -77,16 +91,26 @@ export function useCodeforcesStats(handle) {
           throw new Error('Codeforces user not found')
         }
 
-        setData({
+        const nextData = {
           rank: formatRank(user.rank),
           rating: asNumber(user.rating),
           contests,
           bestRating: asNumber(user.maxRating),
-        })
+        }
+
+        setData(nextData)
+        writeStatsCache(cacheKey, nextData)
       } catch (fetchError) {
         if (fetchError.name !== 'AbortError') {
-          setError(fetchError.message)
-          setData(null)
+          const nextError = isRateLimitError(fetchError.message)
+            ? 'Codeforces rate limit reached. Showing cached stats if available.'
+            : fetchError.message
+
+          setError(nextError)
+
+          if (!cachedEntry?.data) {
+            setData(null)
+          }
         }
       } finally {
         if (!controller.signal.aborted) {

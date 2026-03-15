@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { getStatsCacheKey, isFreshCache, isRateLimitError, readStatsCache, writeStatsCache } from '../utils/statsCache.js'
 
 export const LEETCODE_STATS = {
   solved: { key: 'solved', label: 'Problems Solved' },
@@ -27,6 +28,19 @@ export function useLeetcodeStats(username) {
       return undefined
     }
 
+    const cacheKey = getStatsCacheKey('leetcode', username)
+    const cachedEntry = readStatsCache(cacheKey)
+
+    if (cachedEntry?.data) {
+      setData(cachedEntry.data)
+      setLoading(!isFreshCache(cachedEntry))
+      setError(null)
+    }
+
+    if (isFreshCache(cachedEntry)) {
+      return undefined
+    }
+
     const controller = new AbortController()
 
     async function loadLeetcodeStats() {
@@ -48,16 +62,26 @@ export function useLeetcodeStats(username) {
           throw new Error('LeetCode stats unavailable')
         }
 
-        setData({
+        const nextData = {
           solved: asNumber(result.solvedProblem),
           easy: asNumber(result.easySolved),
           medium: asNumber(result.mediumSolved),
           hard: asNumber(result.hardSolved),
-        })
+        }
+
+        setData(nextData)
+        writeStatsCache(cacheKey, nextData)
       } catch (fetchError) {
         if (fetchError.name !== 'AbortError') {
-          setError(fetchError.message)
-          setData(null)
+          const nextError = isRateLimitError(fetchError.message)
+            ? 'LeetCode rate limit reached. Showing cached stats if available.'
+            : fetchError.message
+
+          setError(nextError)
+
+          if (!cachedEntry?.data) {
+            setData(null)
+          }
         }
       } finally {
         if (!controller.signal.aborted) {

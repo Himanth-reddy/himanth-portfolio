@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { getStatsCacheKey, isFreshCache, isRateLimitError, readStatsCache, writeStatsCache } from '../utils/statsCache.js'
 
 export const GITHUB_STATS = {
   publicRepos: { key: 'publicRepos', label: 'Public Repos' },
@@ -91,6 +92,19 @@ export function useGithubStats(username) {
       return undefined
     }
 
+    const cacheKey = getStatsCacheKey('github', username)
+    const cachedEntry = readStatsCache(cacheKey)
+
+    if (cachedEntry?.data) {
+      setData(cachedEntry.data)
+      setLoading(!isFreshCache(cachedEntry))
+      setError(null)
+    }
+
+    if (isFreshCache(cachedEntry)) {
+      return undefined
+    }
+
     const controller = new AbortController()
 
     async function loadGithubStats() {
@@ -115,18 +129,28 @@ export function useGithubStats(username) {
           totalCommits = 0
         }
 
-        setData({
+        const nextData = {
           publicRepos: Number(result.public_repos) || 0,
           followers: Number(result.followers) || 0,
           following: Number(result.following) || 0,
           gists: Number(result.public_gists) || 0,
           totalCommits,
           accountYears: yearsSince(result.created_at),
-        })
+        }
+
+        setData(nextData)
+        writeStatsCache(cacheKey, nextData)
       } catch (fetchError) {
         if (fetchError.name !== 'AbortError') {
-          setError(fetchError.message)
-          setData(null)
+          const nextError = isRateLimitError(fetchError.message)
+            ? 'GitHub rate limit reached. Showing cached stats if available.'
+            : fetchError.message
+
+          setError(nextError)
+
+          if (!cachedEntry?.data) {
+            setData(null)
+          }
         }
       } finally {
         if (!controller.signal.aborted) {
