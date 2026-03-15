@@ -65,31 +65,6 @@ function App() {
           '-=0.56',
         )
 
-      gsap.to('.hero-orb-1', {
-        y: -12,
-        x: 7,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      })
-      gsap.to('.hero-orb-2', {
-        y: -8,
-        x: -5,
-        duration: 4.2,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      })
-      gsap.to('.hero-orb-3', {
-        y: -14,
-        x: 4,
-        duration: 3.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      })
-
       const onMove = (event) => {
         const x = (event.clientX / window.innerWidth - 0.5) * 30
         const y = (event.clientY / window.innerHeight - 0.5) * 20
