@@ -144,8 +144,7 @@ function Hero() {
             <a
               className="hero-action hero-action-secondary hov"
               href={heroActionLinks.cv}
-              target="_blank"
-              rel="noreferrer"
+              download="Himanth's Resume.pdf"
             >
               {siteContent.hero.actions.secondary.label}
             </a>
