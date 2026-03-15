@@ -61,7 +61,15 @@ function App() {
         .fromTo(
           '[data-hero-terminal]',
           { opacity: 0, y: 36 },
-          { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.75,
+            ease: 'power3.out',
+            onComplete: () => {
+              window.dispatchEvent(new Event('hero-terminal-ready'))
+            },
+          },
           '-=0.56',
         )
 

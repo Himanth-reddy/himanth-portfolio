@@ -500,11 +500,59 @@ button {
 }
 
 .hero-terminal-line {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   color: var(--gh-c);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
     'Courier New', monospace;
   font-size: 0.8125rem;
   line-height: 1.8;
+}
+
+.hero-terminal-prompt {
+  color: var(--accent);
+}
+
+.hero-terminal-detail {
+  color: var(--muted);
+}
+
+.hero-terminal-accent-green {
+  color: var(--gh-c);
+}
+
+.hero-terminal-accent-orange {
+  color: var(--lc-c);
+}
+
+.hero-terminal-accent-cyan {
+  color: var(--kg-c);
+}
+
+.hero-terminal-accent-violet {
+  color: #a78bfa;
+}
+
+.hero-terminal-caret {
+  display: inline-block;
+  width: 0.4375rem;
+  height: 0.8125rem;
+  background: var(--text);
+  animation: terminal-caret-blink 1s infinite;
+  vertical-align: middle;
+}
+
+@keyframes terminal-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
 }
 
 [data-nav-logo],

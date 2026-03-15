@@ -40,9 +40,23 @@ export const siteContent = {
     },
     terminal: {
       path: '~/portfolio',
-      command: '> whoami',
+      command: 'whoami',
       output: [
-          'AIML student @ Warangal, India',
+        {
+          accent: 'AIML Student',
+          accentColor: 'green',
+          detail: '@ Warangal, India',
+        },
+        {
+          accent: 'React',
+          accentColor: 'orange',
+          detail: '+ Machine Learning',
+        },
+        {
+          accent: 'Open',
+          accentColor: 'violet',
+          detail: 'to opportunities',
+        },
       ],
     },
   },
