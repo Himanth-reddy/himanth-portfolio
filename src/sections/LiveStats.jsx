@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { statsCards, statsProfile, statsSectionContent } from '../data/stats.js'
 import { useGithubStats } from '../hooks/useGithubStats.js'
 import { useLeetcodeStats } from '../hooks/useLeetcodeStats.js'
-import { siteContent } from '../data/siteContent.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 function useCountUp(target, isVisible) {

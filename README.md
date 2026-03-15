@@ -106,6 +106,18 @@ VITE_EMAILJS_PUBLIC_KEY=your_public_key
 
 If these are missing, the form will show a configuration error in the UI.
 
+## GitHub Commit Totals
+
+`useGithubStats` can also return `totalCommits`, sourced from GitHub GraphQL as current-year commit contributions.
+
+Add this optional environment variable if you want commit totals:
+
+```env
+VITE_GITHUB_TOKEN=your_github_token
+```
+
+Without a token, the hook still returns the existing REST-based stats and falls back to `totalCommits: 0`.
+
 ## Deployment
 
 This project is configured for static deployment on Vercel.

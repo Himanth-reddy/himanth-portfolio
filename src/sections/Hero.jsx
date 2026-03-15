@@ -17,17 +17,15 @@ function Hero() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (prefersReducedMotion) {
-      setVisibleCommand(terminalCommand)
-      setVisibleTerminalLines(terminalLines)
-      setIsPlaybackComplete(true)
-      setShowCommandCaret(false)
-      return undefined
-    }
+      const timer = window.setTimeout(() => {
+        setVisibleCommand(terminalCommand)
+        setVisibleTerminalLines(terminalLines)
+        setIsPlaybackComplete(true)
+        setShowCommandCaret(false)
+      }, 0)
 
-    setVisibleCommand('')
-    setVisibleTerminalLines([])
-    setIsPlaybackComplete(false)
-    setShowCommandCaret(false)
+      return () => window.clearTimeout(timer)
+    }
 
     const timers = []
     const commandStepDelay = 90
