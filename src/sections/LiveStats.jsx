@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { statsCards, statsProfile, statsSectionContent } from '../data/stats.js'
+import { useCodeforcesStats } from '../hooks/useCodeforcesStats.js'
 import { useGithubStats } from '../hooks/useGithubStats.js'
 import { useLeetcodeStats } from '../hooks/useLeetcodeStats.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
@@ -42,11 +43,14 @@ function LiveStats() {
   const scrollStateRef = useRef({ frameId: 0, currentLeft: 0, targetLeft: 0 })
   const githubResult = useGithubStats(statsProfile.githubUsername)
   const leetcodeResult = useLeetcodeStats(statsProfile.leetcodeUsername)
+  const codeforcesResult = useCodeforcesStats(statsProfile.codeforcesUsername)
   const githubCard = statsCards.find((card) => card.id === 'github')
   const leetcodeCard = statsCards.find((card) => card.id === 'leetcode')
+  const codeforcesCard = statsCards.find((card) => card.id === 'codeforces')
 
   const githubMetrics = githubResult.data ?? githubCard?.fallbackMetrics ?? {}
   const leetcodeMetrics = leetcodeResult.data ?? leetcodeCard?.fallbackMetrics ?? {}
+  const codeforcesMetrics = codeforcesResult.data ?? codeforcesCard?.fallbackMetrics ?? {}
 
   const ghAnimated = useCountUp(githubMetrics[githubCard?.primaryStat.key] ?? 0, isVisible)
   const lcAnimated = useCountUp(leetcodeMetrics[leetcodeCard?.primaryStat.key] ?? 0, isVisible)
@@ -75,6 +79,21 @@ function LiveStats() {
           value: leetcodeMetrics[stat.key] ?? 0,
         })),
         isTextValue: false,
+      }
+    }
+
+    if (card.source === 'codeforces') {
+      const displayValue = codeforcesMetrics[card.primaryStat.key] ?? ''
+
+      return {
+        ...card,
+        displayValue,
+        primaryLabel: card.primaryStat.label,
+        subStats: card.subStats.map((stat) => ({
+          label: stat.label,
+          value: codeforcesMetrics[stat.key] ?? 0,
+        })),
+        isTextValue: typeof displayValue === 'string',
       }
     }
 
