@@ -7,6 +7,8 @@ export const LEETCODE_STATS = {
   hard: { key: 'hard', label: 'Hard' },
 }
 
+const LEETCODE_API_BASE_URL = 'https://alfa-leetcode-api.onrender.com'
+
 function asNumber(value) {
   const numeric = Number(value)
   return Number.isFinite(numeric) ? numeric : 0
@@ -32,7 +34,7 @@ export function useLeetcodeStats(username) {
         setLoading(true)
         setError(null)
 
-        const response = await fetch(`https://leetcode-stats-api.herokuapp.com/${username}`, {
+        const response = await fetch(`${LEETCODE_API_BASE_URL}/${username}/solved`, {
           signal: controller.signal,
         })
 
@@ -42,12 +44,12 @@ export function useLeetcodeStats(username) {
 
         const result = await response.json()
 
-        if (result?.status === 'error') {
-          throw new Error(result.message || 'LeetCode stats unavailable')
+        if (typeof result !== 'object' || result === null) {
+          throw new Error('LeetCode stats unavailable')
         }
 
         setData({
-          solved: asNumber(result.totalSolved),
+          solved: asNumber(result.solvedProblem),
           easy: asNumber(result.easySolved),
           medium: asNumber(result.mediumSolved),
           hard: asNumber(result.hardSolved),
