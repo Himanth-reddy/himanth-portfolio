@@ -1,11 +1,12 @@
 import { GITHUB_STATS } from '../hooks/useGithubStats.js'
 import { LEETCODE_STATS } from '../hooks/useLeetcodeStats.js'
+import { CODEFORCES_STATS } from '../hooks/useCodeforcesStats.js'
 
 export const siteContent = {
   brand: {
-    shortName: 'YK',
+    shortName: 'HR',
     mark: '.',
-    footerCopy: 'Copyright 2026. Built with React + Tailwind.',
+    footerCopy: 'Built with React + Tailwind.',
   },
   navigation: {
     links: [
@@ -16,12 +17,12 @@ export const siteContent = {
       { label: 'Contact', href: '#contact' },
     ],
     cta: {
-      label: 'Hire Me',
+      label: 'Contact Me',
       href: '#contact',
     },
   },
   hero: {
-    kicker: 'Available for internships and freelance',
+    kicker: 'Available for internships',
     titleLines: [
       { text: 'Building', style: 'solid' },
       { text: 'Things That', style: 'solid', offset: true },
@@ -35,7 +36,7 @@ export const siteContent = {
       },
       secondary: {
         label: 'Download CV',
-        href: 'https://drive.google.com/file/d/replace-with-your-cv-id/view',
+        href: '/himanth-resume.pdf',
       },
     },
     terminal: {
@@ -45,7 +46,7 @@ export const siteContent = {
         {
           accent: 'AIML Student',
           accentColor: 'green',
-          detail: '@ Warangal, India',
+          detail: '@ Surampalem, India',
         },
         {
           accent: 'React',
@@ -65,7 +66,6 @@ export const siteContent = {
     items: [
       'React',
       'Machine Learning',
-      'Kaggle Top 12%',
       'PyTorch',
       'Open to Opportunities',
       'Tailwind CSS',
@@ -124,67 +124,54 @@ export const siteContent = {
     filters: [
       { id: 'all', label: 'All' },
       { id: 'ml', label: 'ML / AI' },
-      { id: 'web', label: 'React' },
+      { id: 'web', label: 'Web Apps' },
     ],
     items: [
-      {
-        id: 'credit-risk-classifier',
-        category: 'ml',
-        type: 'Kaggle Competition',
-        title: 'Credit Risk Classifier',
-        description:
-          'Ensemble model predicting loan defaults. Top 8% leaderboard using XGBoost and advanced feature engineering.',
-        tags: ['Python', 'XGBoost', 'Pandas', 'SHAP'],
-        links: [
-          { label: 'GitHub', href: '#' },
-          { label: 'Kaggle', href: '#' },
-        ],
-      },
-      {
-        id: 'devboard-task-manager',
-        category: 'web',
-        type: 'React Web App',
-        title: 'DevBoard - Task Manager',
-        description:
-          'Kanban-style task manager with drag and drop, real-time sync, and team collaboration workflows.',
-        tags: ['React', 'Tailwind', 'Firebase', 'DnD'],
-        links: [
-          { label: 'Live Demo', href: '#' },
-          { label: 'GitHub', href: '#' },
-        ],
-      },
-      {
-        id: 'sentimentai-dashboard',
-        category: 'ml',
-        type: 'Hackathon - 2nd Place',
-        title: 'SentimentAI Dashboard',
-        description:
-          'Real-time social sentiment analysis processing high-volume streams with a fine-tuned transformer pipeline.',
-        tags: ['BERT', 'React', 'FastAPI', 'HuggingFace'],
-        links: [
-          { label: 'Live Demo', href: '#' },
-          { label: 'GitHub', href: '#' },
-        ],
-      },
-      {
-        id: 'campus-mentor-ai',
-        category: 'web',
-        type: 'Full Stack AI Tool',
-        title: 'Campus Mentor AI',
-        description:
-          'Student support assistant that recommends resources, answers campus FAQs, and routes queries through a lightweight RAG workflow.',
-        tags: ['React', 'Node.js', 'OpenAI API', 'Vector Search'],
-        links: [
-          { label: 'Live Demo', href: '#' },
-          { label: 'GitHub', href: '#' },
-        ],
-      },
+  {
+    id: 'lens-of-judgment',
+    category: 'web',
+    type: 'Full Stack Web App',
+    title: 'Lens of Judgment',
+    description:
+      'Full-stack movie review platform with a custom 4-tier rating system, 15+ RESTful API endpoints, TMDB integration, community features, and JWT authentication.',
+    tags: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'JWT', 'TMDB API'],
+    links: [
+      { label: 'Live Demo', href: 'https://lens-of-judgment.onrender.com/' },
+      { label: 'GitHub', href: 'https://github.com/Himanth-reddy/lens-of-judgment-app' },
     ],
+  },
+  {
+    id: 'amantra-pwa',
+    category: 'web',
+    type: 'Progressive Web App',
+    title: 'Amantra — Digital Bond Management',
+    description:
+      'PWA that digitizes informal financial agreements between local vendors and customers with real-time Firestore, QR sharing, audit logging, and CI/CD via GitHub Actions.',
+    tags: ['JavaScript', 'Firebase', 'Firestore', 'Tailwind CSS', 'PWA', 'CI/CD'],
+    links: [
+      { label: 'Live Demo', href: 'https://amantra-360.web.app/signin.html' },
+      { label: 'GitHub', href: 'https://github.com/Manindra-babu/Amantra' },
+    ],
+  },
+  {
+    id: 'collabx',
+    category: 'web',
+    type: 'Hackathon Project',
+    title: 'CollabX — Hackathon Team Finder',
+    description:
+      'Platform for skill-based teammate discovery and team formation with 10+ REST API endpoints, relational schema on Supabase (PostgreSQL), and IaC deployment on Render.',
+    tags: ['React 19', 'Node.js', 'Express', 'Supabase', 'PostgreSQL', 'JWT'],
+    links: [
+      { label: 'GitHub', href: 'https://github.com/WHENKEY2007/Hackathon_Project' },
+    ],
+  },
+],
   },
   stats: {
     profile: {
-      githubUsername: 'octocat',
-      leetcodeUsername: 'leetcode',
+      githubUsername: 'Himanth-reddy',
+      leetcodeUsername: 'himanth_reddy',
+      codeforcesUsername: 'himanth_reddy',
     },
     section: {
       label: 'Live Profiles',
@@ -196,7 +183,7 @@ export const siteContent = {
       {
         id: 'github',
         source: 'github',
-        href: 'https://github.com/yourhandle',
+        href: 'https://github.com/Himanth-reddy',
         short: 'GH',
         name: 'GitHub',
         colorClass: 'gh-c',
@@ -206,14 +193,14 @@ export const siteContent = {
           [GITHUB_STATS.publicRepos.key]: 23,
           [GITHUB_STATS.followers.key]: 154,
           [GITHUB_STATS.following.key]: 12,
-          [GITHUB_STATS.gists.key]: 8,
+          [GITHUB_STATS.totalCommits.key]: 300,
         },
-        subStats: [GITHUB_STATS.followers, GITHUB_STATS.following, GITHUB_STATS.gists],
+        subStats: [GITHUB_STATS.totalCommits, GITHUB_STATS.followers, GITHUB_STATS.following,],
       },
       {
         id: 'leetcode',
         source: 'leetcode',
-        href: 'https://leetcode.com/yourname',
+        href: 'https://leetcode.com/u/himanth_reddy/',
         short: 'LC',
         name: 'LeetCode',
         colorClass: 'lc-c',
@@ -228,34 +215,20 @@ export const siteContent = {
         subStats: [LEETCODE_STATS.easy, LEETCODE_STATS.medium, LEETCODE_STATS.hard],
       },
       {
-        id: 'kaggle',
-        source: 'static',
-        short: 'KG',
-        name: 'Kaggle',
-        colorClass: 'kg-c',
-        primaryText: 'Top 12%',
-        primaryLabel: 'Global Rank',
-        progress: 88,
-        subStats: [
-          { label: 'Competitions', value: 8 },
-          { label: 'Notebooks', value: 14 },
-          { label: 'Medals', value: 3 },
-        ],
-      },
-      {
         id: 'codeforces',
-        source: 'static',
+        source: 'codeforces',
         short: 'CF',
         name: 'Codeforces',
         colorClass: 'gh-c',
-        primaryText: 'Pupil',
-        primaryLabel: 'Current Rank',
+        primaryStat: CODEFORCES_STATS.rank,
         progress: 61,
-        subStats: [
-          { label: 'Rating', value: 1284 },
-          { label: 'Contests', value: 19 },
-          { label: 'Best', value: 1362 },
-        ],
+        fallbackMetrics: {
+          [CODEFORCES_STATS.rank.key]: 'Pupil',
+          [CODEFORCES_STATS.rating.key]: 1284,
+          [CODEFORCES_STATS.contests.key]: 19,
+          [CODEFORCES_STATS.bestRating.key]: 1362,
+        },
+        subStats: [CODEFORCES_STATS.rating, CODEFORCES_STATS.contests, CODEFORCES_STATS.bestRating],
       },
     ],
   },
@@ -269,10 +242,10 @@ export const siteContent = {
         'Open to internships, freelance projects, and hackathon collaborations. If you have an idea, I can help shape and ship it.',
     },
     links: [
-      { id: 'github', icon: 'GH', label: 'github.com/yourhandle', href: 'https://github.com/' },
-      { id: 'linkedin', icon: 'LI', label: 'linkedin.com/in/yourname', href: 'https://linkedin.com/' },
-      { id: 'kaggle', icon: 'KG', label: 'kaggle.com/yourname', href: 'https://kaggle.com/' },
-      { id: 'email', icon: '@', label: 'hello@yourname.dev', href: 'mailto:hello@yourname.dev' },
+      { id: 'github', icon: 'GH', label: 'github.com/Himanth-reddy', href: 'https://github.com/Himanth-reddy' },
+      { id: 'linkedin', icon: 'LI', label: 'linkedin.com/in/himanth_reddy', href: 'https://www.linkedin.com/in/himanth-reddy/' },
+      { id: 'kaggle', icon: 'KG', label: 'kaggle.com/himanthreddy', href: 'https://www.kaggle.com/himanthreddytummala/' },
+      { id: 'email', icon: '@', label: 'himanth421@gmail.com', href: 'mailto:himanth421@gmail.com' },
     ],
     formFields: [
       { id: 'name', label: 'Name', placeholder: 'Your name', type: 'text' },
