@@ -36,7 +36,7 @@ export const siteContent = {
       },
       secondary: {
         label: 'Download CV',
-        href: '/himanth-resume.pdf',
+        href: 'https://drive.google.com/uc?export=download&id=1PHQ0vnQbuXLIsmqy_rYqLdmrDomElWRV',
       },
     },
     terminal: {
