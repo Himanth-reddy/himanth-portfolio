@@ -3,11 +3,79 @@ import emailjs from '@emailjs/browser'
 import { contactFormFields, contactLinks, contactSectionContent } from '../data/contact.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
+const MESSAGE_RATE_LIMIT_WINDOW_MS = 30 * 60 * 1000
+const MESSAGE_RATE_LIMIT_STORAGE_KEY = 'contact-message-rate-limit-v1'
+
 const INITIAL_FORM = {
   name: '',
   email: '',
   subject: '',
   message: '',
+}
+
+function normalizeMessageForRateLimit(message) {
+  return message.trim().replace(/\s+/g, ' ').toLowerCase()
+}
+
+function hashMessage(message) {
+  let hash = 0
+
+  for (let index = 0; index < message.length; index += 1) {
+    hash = (hash << 5) - hash + message.charCodeAt(index)
+    hash |= 0
+  }
+
+  return String(hash)
+}
+
+function readRateLimitStore() {
+  if (typeof window === 'undefined') {
+    return {}
+  }
+
+  try {
+    const raw = window.localStorage.getItem(MESSAGE_RATE_LIMIT_STORAGE_KEY)
+
+    if (!raw) {
+      return {}
+    }
+
+    const parsed = JSON.parse(raw)
+    return parsed && typeof parsed === 'object' ? parsed : {}
+  } catch {
+    return {}
+  }
+}
+
+function writeRateLimitStore(store) {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  window.localStorage.setItem(MESSAGE_RATE_LIMIT_STORAGE_KEY, JSON.stringify(store))
+}
+
+function pruneExpiredRateLimits(store, now) {
+  return Object.fromEntries(
+    Object.entries(store).filter(([, timestamp]) => now - Number(timestamp) < MESSAGE_RATE_LIMIT_WINDOW_MS),
+  )
+}
+
+function formatRemainingWaitTime(remainingMs) {
+  const totalMinutes = Math.ceil(remainingMs / (60 * 1000))
+
+  if (totalMinutes < 60) {
+    return `${totalMinutes} minute${totalMinutes === 1 ? '' : 's'}`
+  }
+
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+
+  if (minutes === 0) {
+    return `${hours} hour${hours === 1 ? '' : 's'}`
+  }
+
+  return `${hours} hour${hours === 1 ? '' : 's'} ${minutes} minute${minutes === 1 ? '' : 's'}`
 }
 
 function Contact() {
@@ -46,6 +114,23 @@ function Contact() {
       setIsSubmitting(true)
       setStatus({ type: 'idle', message: '' })
 
+      const normalizedMessage = normalizeMessageForRateLimit(form.message)
+      const messageKey = hashMessage(normalizedMessage)
+      const now = Date.now()
+      const rateLimitStore = pruneExpiredRateLimits(readRateLimitStore(), now)
+      const lastSentAt = Number(rateLimitStore[messageKey] ?? 0)
+
+      if (lastSentAt && now - lastSentAt < MESSAGE_RATE_LIMIT_WINDOW_MS) {
+        const remainingMs = MESSAGE_RATE_LIMIT_WINDOW_MS - (now - lastSentAt)
+
+        writeRateLimitStore(rateLimitStore)
+        setStatus({
+          type: 'error',
+          message: `This message was already sent recently. Try again in ${formatRemainingWaitTime(remainingMs)}.`,
+        })
+        return
+      }
+
       await emailjs.send(
         envConfig.serviceId,
         envConfig.templateId,
@@ -58,6 +143,10 @@ function Contact() {
         { publicKey: envConfig.publicKey },
       )
 
+      writeRateLimitStore({
+        ...rateLimitStore,
+        [messageKey]: now,
+      })
       setStatus({ type: 'success', message: 'Message sent successfully. I will reply soon.' })
       setForm(INITIAL_FORM)
     } catch {
